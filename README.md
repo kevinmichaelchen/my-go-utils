@@ -12,4 +12,3 @@ This library features helper functions for
 - initializing a DB connection with retries and intermittent sleeping
 - parsing strings to int64
 - parsing int64 vars from a map of route variables
-- 
