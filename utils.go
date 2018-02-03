@@ -62,6 +62,29 @@ func GetInt64(w http.ResponseWriter, routeVars map[string]string, varKey string)
 	return StringToInt64(routeVar), true
 }
 
+// EnvOrInt returns the environment variable for the given key as an int,
+// or if the default value if no environment variable is found.
+func EnvOrInt(key string, defaultVal int) int {
+	v, ok := os.LookupEnv(key)
+	if !ok {
+		return defaultVal
+	}
+	i, err := strconv.Atoi(v)
+	if err != nil {
+		log.Fatalf("Env var %s needs to be an int...\n", key)
+	}
+	return i
+}
+
+// MustEnv returns the environment variable for the given key, or exits if no such variable is found.
+func MustEnv(key string) string {
+	v, ok := os.LookupEnv(key)
+	if !ok {
+		log.Fatalf("No env var for: %s", key)
+	}
+	return v
+}
+
 // RespondWithError writes a JSON error message to the client.
 func RespondWithError(w http.ResponseWriter, code int, message string) {
 	RespondWithJSON(w, code, map[string]string{"error": message})
