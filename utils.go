@@ -24,6 +24,11 @@ func InitSnowflakeNode(nodeNumber int64) *snowflake.Node {
 	return node
 }
 
+// NewPrimaryKey generates a Snowflake ID and returns it as an int64.
+func NewPrimaryKey(snowflakeNode *snowflake.Node) int64 {
+	return snowflakeNode.Generate().Int64()
+}
+
 // InitDatabase initializes the DB connection.
 //
 // Example usage:
@@ -46,11 +51,6 @@ func InitDatabase(driverName, dataSourceName string, numRetries int, sleepDurati
 		log.Fatal(err)
 	}
 	return db
-}
-
-// NewPrimaryKey generates a Snowflake ID and returns it as an int64.
-func NewPrimaryKey(snowflakeNode *snowflake.Node) int64 {
-	return snowflakeNode.Generate().Int64()
 }
 
 // GetInt64 returns the given route parameter as an int64.
