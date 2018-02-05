@@ -11,6 +11,17 @@ import (
 	"time"
 )
 
+func StartTransaction(w http.ResponseWriter, DB *sql.DB) (*sql.Tx, error) {
+	var err error
+	tx, err := DB.Begin()
+	if err != nil {
+		tx.Rollback()
+		RespondWithError(w, http.StatusInternalServerError, err.Error())
+		return nil, err
+	}
+	return tx, err
+}
+
 // InitSnowflakeNode initializes a Snowflake node.
 //
 // Example usage:
