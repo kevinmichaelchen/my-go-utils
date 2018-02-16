@@ -75,10 +75,11 @@ func GetInt64(w http.ResponseWriter, routeVars map[string]string, varKey string)
 }
 
 // EnvOrInt returns the environment variable for the given key as an int,
-// or if the default value if no environment variable is found.
+// or the default value if no environment variable is found.
 func EnvOrInt(key string, defaultVal int) int {
 	v, ok := os.LookupEnv(key)
 	if !ok {
+		log.Printf("No env var found for %s. Using default value: %d\n", key, defaultVal)
 		return defaultVal
 	}
 	i, err := strconv.Atoi(v)
@@ -86,6 +87,17 @@ func EnvOrInt(key string, defaultVal int) int {
 		log.Fatalf("Env var %s needs to be an int...\n", key)
 	}
 	return i
+}
+
+// EnvOrString returns the environment variable for the given key,
+// or the default value if no environment variable is found.
+func EnvOrString(key, defaultVal string) string {
+	v, ok := os.LookupEnv(key)
+	if !ok {
+		log.Printf("No env var found for %s. Using default value: %s\n", key, defaultVal)
+		return defaultVal
+	}
+	return v
 }
 
 // MustEnv returns the environment variable for the given key, or exits if no such variable is found.
