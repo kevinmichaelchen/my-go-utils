@@ -9,6 +9,8 @@ import (
 	"os"
 	"strconv"
 	"time"
+	"google.golang.org/grpc"
+	"fmt"
 )
 
 func StartTransaction(w http.ResponseWriter, DB *sql.DB) (*sql.Tx, error) {
@@ -62,6 +64,24 @@ func InitDatabase(driverName, dataSourceName string, numRetries int, sleepDurati
 		log.Fatal(err)
 	}
 	return db
+}
+
+func InitGrpcConn(address string, numRetries int, sleepDuration time.Duration) *grpc.ClientConn {
+	var err error
+	var conn *grpc.ClientConn
+	for i := 0; i < numRetries; i++ {
+		conn, err = grpc.Dial(address, grpc.WithInsecure())
+		if err == nil {
+			log.Println("Grpc connection initialized...")
+			break
+		}
+		log.Println("Grpc connection failed to initialize... Sleeping...")
+		time.Sleep(sleepDuration)
+	}
+	if err != nil {
+		log.Fatal(err)
+	}
+	return conn
 }
 
 // GetInt64 returns the given route parameter as an int64.
