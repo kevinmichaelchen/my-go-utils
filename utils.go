@@ -10,7 +10,6 @@ import (
 	"strconv"
 	"time"
 	"google.golang.org/grpc"
-	"fmt"
 )
 
 func StartTransaction(w http.ResponseWriter, DB *sql.DB) (*sql.Tx, error) {
