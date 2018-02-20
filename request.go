@@ -10,6 +10,11 @@ func RespondWithError(w http.ResponseWriter, code int, message string) {
 	RespondWithJSON(w, code, map[string]string{"error": message})
 }
 
+// RespondWithMessage writes a simple JSON message to the client.
+func RespondWithMessage(w http.ResponseWriter, code int, message string) {
+	RespondWithJSON(w, code, map[string]string{"msg": message})
+}
+
 // RespondWithJSON writes a JSON struct to the client.
 func RespondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 	response, _ := json.Marshal(payload)
