@@ -6,6 +6,22 @@ import (
 	"strconv"
 )
 
+// EnvOrBool returns the environment variable for the given key,
+// or the default value if no environment variable is found.
+func EnvOrBool(key string, defaultVal bool) bool {
+	v, ok := os.LookupEnv(key)
+	if !ok {
+		log.Printf("No env var found for %s. Using default value: %s\n", key, defaultVal)
+		return defaultVal
+	}
+	if b, err := strconv.ParseBool(v); err != nil {
+		log.Printf("Env var for %s is not a proper boolean\n", key)
+		panic(err)
+	} else {
+		return b
+	}
+}
+
 // EnvOrInt returns the environment variable for the given key as an int,
 // or the default value if no environment variable is found.
 func EnvOrInt(key string, defaultVal int) int {

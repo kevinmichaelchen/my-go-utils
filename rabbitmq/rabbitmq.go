@@ -19,25 +19,18 @@ func SendMessage(s Message) {
 // Message represents an empty interface that will be marshaled to JSON and sent as a message.
 type Message string //interface{}
 
-// RabbitConnectionInfo contains connection info to our RabbitMQ cluster
-type RabbitConnectionInfo struct {
-	user, password, host string
-	port                 int
-}
-
 // Connection info to our RabbitMQ cluster
 var (
-	rci = &RabbitConnectionInfo{
-		user:     os.Getenv("RABBITMQ_USER"),
-		password: os.Getenv("RABBITMQ_PASSWORD"),
-		host:     os.Getenv("RABBITMQ_HOST"),
-		port:     utils.EnvOrInt("RABBITMQ_PORT", 5672),
-	}
+	Enabled  = utils.EnvOrBool("RABBITMQ_ENABLED", true)
+	User     = os.Getenv("RABBITMQ_USER")
+	Password = os.Getenv("RABBITMQ_PASSWORD")
+	Host     = os.Getenv("RABBITMQ_HOST")
+	Port     = utils.EnvOrInt("RABBITMQ_PORT", 5672)
 )
 
 // getConnectionString returns a connection string to our RabbitMQ cluster
 func getConnectionString() string {
-	return fmt.Sprintf("amqp://%s:%s@%s:%d/", rci.user, rci.password, rci.host, rci.port)
+	return fmt.Sprintf("amqp://%s:%s@%s:%d/", User, Password, Host, Port)
 }
 
 // RabbitListener is an object that will listen for messages.
@@ -76,6 +69,10 @@ func NewRabbitListener(queueName, exchangeName, routingKey string) *RabbitListen
 }
 
 func (l *RabbitListener) Listen() {
+	if !Enabled {
+		return
+	}
+
 	ch, err := l.conn.Channel()
 	failOnError(err, "Failed to open a channel")
 	defer ch.Close()
@@ -104,6 +101,10 @@ func (l *RabbitListener) Listen() {
 }
 
 func (s *RabbitSender) Send(payload interface{}) {
+	if !Enabled {
+		return
+	}
+
 	// TODO reuse channel?
 	ch, err := s.conn.Channel()
 	failOnError(err, "Failed to open a channel")
