@@ -35,14 +35,17 @@ func getConnectionString() string {
 
 // RabbitListener is an object that will listen for messages.
 type RabbitListener struct {
-	exchangeName, routingKey, queueName string
-	conn                                *amqp.Connection
+	exchangeName string
+	routingKey   string
+	queueName    string
+	conn         *amqp.Connection
 }
 
 // RabbitSender is an object that will send messages.
 type RabbitSender struct {
-	exchangeName, routingKey string
-	conn                     *amqp.Connection
+	exchangeName string
+	routingKey   string
+	conn         *amqp.Connection
 }
 
 // NewRabbitSender creates an amqp.Connection, creates the exchange, returns the sender
