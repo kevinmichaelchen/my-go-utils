@@ -109,7 +109,9 @@ func (s *RabbitSender) Send(payload interface{}) {
 	}
 
 	// TODO reuse channel?
+	start := time.Now()
 	ch, err := s.conn.Channel()
+	log.Printf("Took %s to open a channel...\n", time.Since(start))
 	failOnError(err, "Failed to open a channel")
 	defer ch.Close()
 
