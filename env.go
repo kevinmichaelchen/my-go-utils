@@ -11,7 +11,7 @@ import (
 func EnvOrBool(key string, defaultVal bool) bool {
 	v, ok := os.LookupEnv(key)
 	if !ok {
-		log.Printf("No env var found for %s. Using default value: %s\n", key, defaultVal)
+		log.Printf("No env var found for %s. Using default value: %t\n", key, defaultVal)
 		return defaultVal
 	}
 	if b, err := strconv.ParseBool(v); err != nil {
