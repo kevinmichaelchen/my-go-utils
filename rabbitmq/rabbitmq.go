@@ -54,7 +54,7 @@ func NewRabbitSender(exchangeName, routingKey string) *RabbitSender {
 }
 
 // NewRabbitListener creates an amqp.Connection, creates the exchange, returns the sender
-func NewRabbitListener(queueName, exchangeName, routingKey string) *RabbitListener {
+func NewRabbitListener(exchangeName, routingKey, queueName string) *RabbitListener {
 	conn := createConnection()
 	bindExchangeToQueue(conn, exchangeName, routingKey, queueName)
 	return &RabbitListener{
@@ -139,7 +139,7 @@ func createConnection() *amqp.Connection {
 		conn, err = amqp.Dial(connString)
 
 		if err != nil {
-			log.Printf("Could not connect. Will sleep for a bit and then retry")
+			log.Printf("Could not connect to RabbitMQ. Will sleep for a bit and then retry")
 			time.Sleep(5 * time.Second)
 		}
 	}
@@ -170,7 +170,7 @@ func createExchange(conn *amqp.Connection, exchangeName string) {
 }
 
 // bindExchangeToQueue gets/creates the exchange, gets/creates the queue, binds the given exchange to the given queue.
-func bindExchangeToQueue(conn *amqp.Connection, exchangeName, queueName, routingKey string) {
+func bindExchangeToQueue(conn *amqp.Connection, exchangeName, routingKey, queueName string) {
 	ch, err := conn.Channel()
 	failOnError(err, "Failed to open a channel")
 	defer ch.Close()
