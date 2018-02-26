@@ -146,6 +146,8 @@ func createConnection() *amqp.Connection {
 
 	if conn == nil {
 		failOnError(err, "Failed to connect to RabbitMQ")
+	} else {
+		log.Printf("Successfully connected to RabbitMQ: %s\n", connString)
 	}
 
 	return conn
