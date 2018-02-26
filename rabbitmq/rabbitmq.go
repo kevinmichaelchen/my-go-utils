@@ -70,10 +70,12 @@ func (l *RabbitListener) Listen() {
 		return
 	}
 
+	log.Printf("Opening a channel for %s to listen to %s via key: %s\n", l.queueName, l.exchangeName, l.routingKey)
 	ch, err := l.conn.Channel()
 	failOnError(err, "Failed to open a channel")
 	defer ch.Close()
 
+	log.Println("Consuming deliveries from channel...")
 	msgs, err := ch.Consume(
 		l.queueName, // queue
 		"",          // consumer
@@ -93,6 +95,7 @@ func (l *RabbitListener) Listen() {
 		}
 	}()
 
+	log.Println("Listening forever...")
 	// block forever
 	<-forever
 }
