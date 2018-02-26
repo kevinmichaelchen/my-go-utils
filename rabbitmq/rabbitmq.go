@@ -123,7 +123,7 @@ func (s *RabbitSender) Send(payload interface{}) {
 		})
 	failOnError(err, "Failed to publish a message")
 
-	log.Printf(" [x] Sent %s", string(msgBytes))
+	log.Printf(" [x] Sent %s to %s with key: %s", string(msgBytes), s.exchangeName, s.routingKey)
 }
 
 // createConnection creates a amqp.Connection, retrying 3 times.
