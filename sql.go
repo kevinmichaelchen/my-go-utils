@@ -27,6 +27,8 @@ func InitDatabase(driverName, dataSourceName string, numRetries int, sleepDurati
 	}
 	if err != nil {
 		log.Fatal(err)
+	} else {
+		log.Printf("Successfully connected to DB: %s\n", dataSourceName)
 	}
 	return db
 }
