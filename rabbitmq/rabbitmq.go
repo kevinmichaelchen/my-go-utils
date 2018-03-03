@@ -44,6 +44,9 @@ type RabbitSender struct {
 
 // NewRabbitSender creates an amqp.Connection, creates the exchange, returns the sender
 func NewRabbitSender(exchangeName, routingKey string) *RabbitSender {
+	if !Enabled {
+		return nil
+	}
 	conn := createConnection()
 	createExchange(conn, exchangeName)
 	return &RabbitSender{
@@ -55,6 +58,9 @@ func NewRabbitSender(exchangeName, routingKey string) *RabbitSender {
 
 // NewRabbitListener creates an amqp.Connection, creates the exchange, returns the sender
 func NewRabbitListener(exchangeName, routingKey, queueName string) *RabbitListener {
+	if !Enabled {
+		return nil
+	}
 	conn := createConnection()
 	bindExchangeToQueue(conn, exchangeName, routingKey, queueName)
 	return &RabbitListener{

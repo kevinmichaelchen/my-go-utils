@@ -9,6 +9,9 @@ type Dispatcher struct {
 var MessageQueue chan Message
 
 func NewDispatcher(numWorkers, channelCapacity int) *Dispatcher {
+	if !Enabled {
+		return nil
+	}
 	if channelCapacity > 0 {
 		MessageQueue = make(chan Message, channelCapacity)
 	} else {
