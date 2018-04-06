@@ -27,6 +27,10 @@ func getConnectionString() string {
 	return fmt.Sprintf("amqp://%s:%s@%s:%d/", User, Password, Host, Port)
 }
 
+type Sender interface {
+	Send(payload interface{})
+}
+
 // RabbitListener is an object that will listen for messages.
 type RabbitListener struct {
 	exchangeName string
