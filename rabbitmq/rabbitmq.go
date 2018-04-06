@@ -28,7 +28,11 @@ func getConnectionString() string {
 }
 
 type Sender interface {
-	Send(payload interface{})
+	Send(interface{})
+}
+
+func Send(sender Sender, payload interface{}) {
+	sender.Send(payload)
 }
 
 // RabbitListener is an object that will listen for messages.
