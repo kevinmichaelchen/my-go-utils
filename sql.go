@@ -5,6 +5,9 @@ import (
 	"net/http"
 	"time"
 	"log"
+	"strings"
+	"encoding/hex"
+	"github.com/google/uuid"
 )
 
 // InitDatabase initializes the DB connection.
@@ -44,4 +47,14 @@ func StartTransaction(w http.ResponseWriter, DB *sql.DB) (*sql.Tx, error) {
 		return nil, err
 	}
 	return tx, err
+}
+
+// UnhexUuid converts a (google) UUID to unhexed bytes.
+// This method is useful for MySQL apps, since MySQL has no native support for UUIDs (unlike Postgres).
+// This method is functionally equivalent to running
+// SELECT UNHEX(REPLACE(UUID(), "-", ""));
+// in MySQL.
+func UnhexUuid(uuid uuid.UUID) ([]byte, error) {
+	s := strings.Replace(uuid.String(), "-", "", -1)
+	return hex.DecodeString(s)
 }
