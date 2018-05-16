@@ -8,9 +8,8 @@ go get github.com/kevinmichaelchen/my-go-utils
 This library provides several helper functions.
 
 #### Environment variables
-- reading strings
-- reading int64
-- reading booleans
+~~We support reading and type converting environment variables.~~
+Use TeslaGov/envy instead.
 
 #### Type conversions
 - parsing strings to int64
