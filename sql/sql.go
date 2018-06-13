@@ -8,6 +8,7 @@ import (
 	"strings"
 	"encoding/hex"
 	"github.com/google/uuid"
+	requestUtils "github.com/kevinmichaelchen/my-go-utils/request"
 )
 
 // InitDatabase initializes the DB connection.
@@ -43,7 +44,7 @@ func StartTransaction(w http.ResponseWriter, DB *sql.DB) (*sql.Tx, error) {
 	tx, err := DB.Begin()
 	if err != nil {
 		tx.Rollback()
-		RespondWithError(w, http.StatusInternalServerError, err.Error())
+		requestUtils.RespondWithError(w, http.StatusInternalServerError, err.Error())
 		return nil, err
 	}
 	return tx, err
