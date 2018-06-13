@@ -3,7 +3,7 @@ package rabbitmq
 import (
 	"log"
 	"github.com/streadway/amqp"
-	"github.com/kevinmichaelchen/my-go-utils"
+	"github.com/TeslaGov/envy"
 	"os"
 	"fmt"
 	"time"
@@ -15,11 +15,11 @@ type Message string //interface{}
 
 // Connection info to our RabbitMQ cluster
 var (
-	Enabled  = utils.EnvOrBool("RABBITMQ_ENABLED", true)
+	Enabled  = envy.BoolOr("RABBITMQ_ENABLED", true)
 	User     = os.Getenv("RABBITMQ_USER")
 	Password = os.Getenv("RABBITMQ_PASSWORD")
 	Host     = os.Getenv("RABBITMQ_HOST")
-	Port     = utils.EnvOrInt("RABBITMQ_PORT", 5672)
+	Port     = envy.IntOr("RABBITMQ_PORT", 5672)
 )
 
 // getConnectionString returns a connection string to our RabbitMQ cluster
