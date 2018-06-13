@@ -1,4 +1,4 @@
-package utils
+package snowflake
 
 import (
 	"github.com/bwmarrin/snowflake"
