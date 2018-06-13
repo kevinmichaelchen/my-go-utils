@@ -3,6 +3,7 @@ package request
 import (
 	"encoding/json"
 	"net/http"
+	stringUtils "github.com/kevinmichaelchen/my-go-utils/string"
 )
 
 // RespondWithError writes a JSON error message to the client.
@@ -27,19 +28,19 @@ func RespondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 // GetInt64 returns the given route parameter as an int64.
 func GetInt64(w http.ResponseWriter, routeVars map[string]string, varKey string) (int64, bool) {
 	routeVar := routeVars[varKey]
-	if !IsParseableAsInt64(routeVar) {
+	if !stringUtils.IsParseableAsInt64(routeVar) {
 		RespondWithError(w, http.StatusBadRequest, "Invalid route var: "+varKey)
 		return 0, false
 	}
-	return StringToInt64(routeVar), true
+	return stringUtils.StringToInt64(routeVar), true
 }
 
 // GetInt32 returns the given route parameter as an int32.
 func GetInt32(w http.ResponseWriter, routeVars map[string]string, varKey string) (int32, bool) {
 	routeVar := routeVars[varKey]
-	if !IsParseableAsInt32(routeVar) {
+	if !stringUtils.IsParseableAsInt32(routeVar) {
 		RespondWithError(w, http.StatusBadRequest, "Invalid route var: "+varKey)
 		return 0, false
 	}
-	return StringToInt32(routeVar), true
+	return stringUtils.StringToInt32(routeVar), true
 }
